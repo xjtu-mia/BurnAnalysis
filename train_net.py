@@ -95,7 +95,8 @@ if __name__ == '__main__':
     logger.info(model)
     train_loader, test_loader = get_data_loader(split=data_cfg['split'],
                                                 batch_size=data_cfg['batch_size'],
-                                                longest_max_size=data_cfg['longest_max_size'])
+                                                longest_max_size=data_cfg['longest_max_size'],
+                                                prefix=['train', 'val'])
 
     optimizer = torch.optim.AdamW(param_groups, 
                                 BASE_LR, betas=[0.9, 0.99], weight_decay=1e-4)
@@ -126,10 +127,10 @@ if __name__ == '__main__':
             loss = sum(loss_dict.values()) + sum(torch.log(sigmas))
             loss_dict.update({'total_loss': loss})
 
-            loss.backward()  # 反向传播,计算梯度
-            optimizer.step()  # 更新参数
-            scheduler.step()  # 更新学习率
-            optimizer.zero_grad()  # 梯度归零
+            loss.backward()  
+            optimizer.step()  
+            scheduler.step()  
+            optimizer.zero_grad()  
 
             loss_dict_total = {k : loss_dict[k] + loss_dict_total.get(k, 0) 
                             for k in loss_dict.keys()}  # accumulate loss items
