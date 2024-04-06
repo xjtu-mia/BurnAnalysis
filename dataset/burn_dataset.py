@@ -12,14 +12,15 @@ from detectron2.structures import Boxes, Instances, BitMasks
 
 def get_data_loader(split: int|str = 0,
                     batch_size: int = 4, 
-                    longest_max_size: List[int] = [384, 448, 512]):
+                    longest_max_size: List[int] = [384, 448, 512],
+                    prefix: List[int] = ['train', 'test']):
     
     cur_dir = os.path.dirname(__file__)
     coco_json_file = f'{cur_dir}/burns/part_coco/annotations.json'
     image_dir = f'{cur_dir}/burns/image'
-    sem_seg_gt_dir = f'{cur_dir}/burns/depth/label1'
-    train_split_file = f'{cur_dir}/burns/split/{split}/train.txt'
-    test_split_file = train_split_file.replace('train', 'test')
+    sem_seg_gt_dir = f'{cur_dir}/burns/depth/label'
+    train_split_file = f'{cur_dir}/burns/split/{split}/{prefix[0]}.txt'
+    test_split_file = train_split_file.replace('train', f'{prefix[1]}')
     # 获取标注
     train_data_dicts = load_dataset_dicts(
         coco_json_file, image_dir, sem_seg_gt_dir, train_split_file)
@@ -45,12 +46,14 @@ def get_data_loader(split: int|str = 0,
                           batch_size, 
                           num_workers=2, 
                           sampler=RandomSampler(train_ds), 
-                          collate_fn=lambda x: x)
+                          collate_fn=lambda x: x,
+                          drop_last=True)
     test_dl = DataLoader(test_ds, 
                          batch_size, 
                          num_workers=2, 
                          sampler=RandomSampler(test_ds), 
-                         collate_fn=lambda x: x)
+                         collate_fn=lambda x: x,
+                         drop_last=True)
     return train_dl, test_dl
 
 
