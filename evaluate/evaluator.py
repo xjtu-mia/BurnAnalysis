@@ -19,6 +19,7 @@ from .metrics import eval_metrics
 CLASS_NAMES = ['head', 'neck', 'torso', 'upper_arm', 'lower_arm', 'hand',
                              'hip', 'perineum', 'thigh', 'lower_leg', 'foot']
 
+
 class SemanticEvaluator:
     """
     Evaluate semantic segmentation metrics.
@@ -53,8 +54,7 @@ class SemanticEvaluator:
             # read ground truth file
             gt = cv2.imread(input_["sem_gt_file"], -1)
             if self.visualize:
-                img_name = input_['file_name'].replace(
-                    'image', 'image_blur')  # 替换成打码后的图片
+                img_name = input_['file_name']
                 image = cv2.imread(img_name)[..., ::-1]  # bgr -> rgb
                 name = img_name.split('/')[-1]
 
@@ -168,7 +168,7 @@ class InstanceEvaluator:
                 self.sem_gts.append(sem_gt)
                 
                 if self.visualize:
-                    img_name = input_['file_name'].replace('image', 'image_blur')
+                    img_name = input_['file_name']
                     image = cv2.imread(img_name)[..., ::-1]  # bgr -> rgb
                     name = img_name.split('/')[-1]
                     if self.only_mask:
