@@ -13,3 +13,6 @@ python train_net.py --data-split='0', --batch-size=4, --max-epoch=150, --ckpt-di
 ```bash
 python test_eval.py --data-split='0', --batch-size=4, --ckpt-dir='ckpt/tmpckpt', --out-dir='output/tmp', --cndct-vis=False
 ```
+
+## BurnAI Application (Android OS version ≥10)
+- You can download the installation pakage from the [Baidu Netdisk](https://pan.baidu.com/s/1aoKYvQDE6wu8gvTyfAMCkw?pwd=gr67 ) (access code: gr67). 
